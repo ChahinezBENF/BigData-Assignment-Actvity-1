@@ -73,7 +73,7 @@ def process_data():
     print(cursor.fetchall())
 
 
-    # TO DO:  Query for Top 5 Cities with Most Transactions
+    # 5- TO DO:  Query for Top 5 Cities with Most Transactions
     print("------Top 5 Cities with Most Transactions------")
     # Your task: Write an SQL query to find the top 5 cities with the most transactions.
     cursor.execute("""
@@ -85,19 +85,50 @@ def process_data():
     print(cursor.fetchall())
 
 
-    # TO DO:  Query for Top 5 High-Spending Customers
+    # 6- TO DO:  Query for Top 5 High-Spending Customers
+    print("------Top 5 High-Spending Customers------")
     # Your task: Write an SQL query to find the top 5 customers who spent the most in total.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""
+        SELECT CustomerID , SUM(Amount) AS Amount_trans
+        FROM transactions
+        GROUP BY CustomerID
+        ORDER BY Amount_trans
+        LIMIT 5;      
+    """)
+    print(cursor.fetchall())
 
 
     # TO DO:  Query for Hadoop vs Spark Related Product Sales
+    print("------Hadoop vs Spark Related Product Sales------")
     # Your task: Write an SQL query to categorize products related to Hadoop and Spark and find their sales.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""
+        SELECT 
+           CASE
+              WHEN Product LIKE '%Hadoop%' THEN 'Hadoop'
+              WHEN Product LIKE '%Spark%' THEN 'Spark'
+              ELSE 'other'
+            END AS Tech_type,
+            COUNT(*) AS Total_sels
+        FROM transactions
+        WHERE Product LIKE '%Hadoop%' OR Product LIKE '%Spark%'
+        GROUP BY Tech_type;      
+    """)
+    print(cursor.fetchall())
 
 
     # TO DO:  Query for Top Spending Customers in Each City
+    print("------Top Spending Customers in Each City------")
     # Your task: Write an SQL query to find the top spending customer in each city using subqueries.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""
+        SELECT City, CustomerID, MAX(total)
+        FROM (
+           SELECT  City, CustomerID, SUM(Amount) AS total
+           FROM transactions
+           GROUP BY City, CustomerID       
+        )
+        GROUP BY City;      
+    """)
+    print(cursor.fetchall())
 
 
     # Step 8: Close the connection
