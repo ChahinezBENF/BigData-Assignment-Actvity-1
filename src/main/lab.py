@@ -30,22 +30,33 @@ def process_data():
     )
     """)
     
-    # TO DO: Insert data into the database
+    # 1- TO DO: Insert data into the database
     # Your task: Insert the cleaned DataFrame into the SQLite database. Ensure to replace the table if it already exists.
-    df.to_sql("Write your query")
+    df.to_sql("transactions", conn,if_exists="replace", index=False )
 
     # Example Queries - Write SQL queries based on the instructions below
 
-    # TO DO: Query for Top 5 Most Sold Products
+    # 2- TO DO: Query for Top 5 Most Sold Products
+    print("------Top 5 Most Sold Products------")
     # Your task: Write an SQL query to find the top 5 most sold products based on transaction count.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute(""" SELECT COUNT(Product) AS sels_count
+                       FROM transactions
+                       GROUP BY Product
+                       ORDER BY sels_count DESC
+                       LIMIT 5;  """)
 
 
-    # TO DO:  Query for Monthly Revenue Trend
+    # 3- TO DO:  Query for Monthly Revenue Trend
+    print("------Monthly Revenue Trend------")
     # Your task: Write an SQL query to find the total revenue per month.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""  SELECT strftime('%Y-%M', TransactionDate) AS month
+                               SUM(Amount) AS total_rev
+                        FROM transactions
+                        GROUP BY month
+                        ORDER BY month """)
 
     # TO DO:  Query for Payment Method Popularity
+    
     # Your task: Write an SQL query to find the popularity of each payment method used in transactions.
     cursor.execute("""  Enter your query  """)
 
