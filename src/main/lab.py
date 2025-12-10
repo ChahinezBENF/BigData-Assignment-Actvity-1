@@ -39,31 +39,50 @@ def process_data():
     # 2- TO DO: Query for Top 5 Most Sold Products
     print("------Top 5 Most Sold Products------")
     # Your task: Write an SQL query to find the top 5 most sold products based on transaction count.
-    cursor.execute(""" SELECT COUNT(Product) AS sels_count
-                       FROM transactions
-                       GROUP BY Product
-                       ORDER BY sels_count DESC
-                       LIMIT 5;  """)
+    cursor.execute(""" 
+        SELECT Product, COUNT(*) AS sels_count
+        FROM transactions
+        GROUP BY Product
+        ORDER BY sels_count DESC
+        LIMIT 5;
+    """)
+    print(cursor.fetchall())
 
 
     # 3- TO DO:  Query for Monthly Revenue Trend
     print("------Monthly Revenue Trend------")
     # Your task: Write an SQL query to find the total revenue per month.
-    cursor.execute("""  SELECT strftime('%Y-%M', TransactionDate) AS month
-                               SUM(Amount) AS total_rev
-                        FROM transactions
-                        GROUP BY month
-                        ORDER BY month """)
+    cursor.execute("""
+        SELECT strftime('%Y-%m', TransactionDate) AS month,
+               SUM(Amount) AS total_rev
+        FROM transactions
+        GROUP BY month
+        ORDER BY month;
+    """)
+    print(cursor.fetchall())
 
-    # TO DO:  Query for Payment Method Popularity
-    
+    # 4- TO DO:  Query for Payment Method Popularity
+    print("------Payment Method Popularity------")
     # Your task: Write an SQL query to find the popularity of each payment method used in transactions.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""
+        SELECT PaymentMethod, COUNT(*) AS Paymen_ppl
+        FROM transactions
+        GROUP BY PaymentMethod
+        ORDER BY Paymen_ppl DESC;      
+    """)
+    print(cursor.fetchall())
 
 
     # TO DO:  Query for Top 5 Cities with Most Transactions
+    print("------Top 5 Cities with Most Transactions------")
     # Your task: Write an SQL query to find the top 5 cities with the most transactions.
-    cursor.execute("""  Enter your query  """)
+    cursor.execute("""
+        SELECT City, COUNT(*) AS most_trans
+        FROM transactions
+        GROUP BY city
+        ORDER BY most_trans DESC;      
+    """)
+    print(cursor.fetchall())
 
 
     # TO DO:  Query for Top 5 High-Spending Customers
